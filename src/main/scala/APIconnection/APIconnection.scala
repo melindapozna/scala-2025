@@ -14,18 +14,20 @@ object APIconnection extends App{
     val bufferedSource = scala.io.Source.fromFile(fileName)
     val apiKey= bufferedSource.getLines().mkString.strip
     bufferedSource.close()
-    println(apiKey)
+    //println(apiKey)
 
     val response: Response[Either[String, String]] = basicRequest
       .get(uri"https://data.fingrid.fi/api/datasets/${datasetId}/data?startTime=${startTime}&endTime=${endTime}&format=json&pageSize=100")
       .header("x-api-key", apiKey)
       .send()
 
-    val parsedResponse = response.body match {
+    val sttpResponse = response.body match {
       case Right(response) => println(response)
       case Left(err) => println(s"Invalid request : $err")
     }
+
+    //todo parse json
   }
   //test request
-  //requestData(247, "2025-04-20T10:00:00", "2025-04-20T12:00:00")
+  requestData(247, "2025-04-20T10:00:00", "2025-04-20T12:00:00")
 }
