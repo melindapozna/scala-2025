@@ -1,5 +1,5 @@
 package plants
 
-class HydroPlant extends generalPlant {
+class HydroPlant extends GeneralPlant {
   //todo
 }

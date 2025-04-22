@@ -1,8 +1,8 @@
-package APIconnection
+package menus
 
 import scala.io.StdIn.readLine
 
-object menu {
+object Menu {
   private def mainMenu(): Unit = {
     println("\n-------------- REPS Power Plant --------------\n")
     println(

@@ -1,5 +1,5 @@
 package plants
 
-class WindTurbine extends generalPlant {
+class WindTurbine extends GeneralPlant {
   //todo
 }
