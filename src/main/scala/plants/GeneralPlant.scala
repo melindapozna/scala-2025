@@ -16,7 +16,7 @@ trait GeneralPlant {
 
   //changes occupiedStorage to 0
   def clearStorage(): Unit = {
-    occupiedStorage = 0
+    occupiedStorage = 0.0
   }
 
   def changeAngle(angle: Double): Option[String] //returns error msg if angle is out of bounds, returns None if angle OK
