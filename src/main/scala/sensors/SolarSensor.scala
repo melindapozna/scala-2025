@@ -1,13 +1,5 @@
 package sensors
 
-import sttp.client4.Response
-import sttp.client4.quick.*
-import io.circe.*
-import io.circe.parser.*
-
-import java.time.LocalDateTime
-
-
 class SolarSensor(plantInstanceId: Int) extends GeneralSensor {
   // Constructor
   override val datasetId = 247
