@@ -1,4 +1,8 @@
+import plants.Plant
+
 @main
-def main(): Unit =
-  println("Hello world!")
+def main(): Unit = {
+  Plant.run()
+  println("Power plant started successfully.")
+}
 

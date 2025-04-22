@@ -1,4 +1,4 @@
-package menus
+package application
 
 import scala.io.StdIn.readLine
 

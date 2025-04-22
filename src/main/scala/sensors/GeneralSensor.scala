@@ -4,7 +4,6 @@ import sttp.client4.Response
 import sttp.client4.quick.*
 import io.circe.*
 import io.circe.parser.*
-
 import java.time.LocalDateTime
 
 
@@ -38,7 +37,7 @@ trait GeneralSensor() {
         Left(errorMessage.toString)
     }
   }
-
+  
   def getLatest: Either[String, List[Double]]
   def writeToFile(): Unit
   def readFromFile: Either[String, List[Double]]
