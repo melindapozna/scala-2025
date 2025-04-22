@@ -1,7 +1,8 @@
 package plants
 
-class HydroPlant extends GeneralPlant {
+class HydroPlant(instanceId: Int) extends GeneralPlant {
   //todo
+  override val id: Int = instanceId
   override val maxHealth: Int = ???
   var health: Int = ???
   override val storageCapacity: Double = ???
