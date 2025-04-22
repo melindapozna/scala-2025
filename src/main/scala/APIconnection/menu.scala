@@ -3,7 +3,7 @@ package APIconnection
 import scala.io.StdIn.readLine
 
 object menu {
-  def mainMenu(): Unit = {
+  private def mainMenu(): Unit = {
     println("\n-------------- REPS Power Plant --------------\n")
     println(
       """1. Check cameras
@@ -25,7 +25,7 @@ object menu {
 
   }
 
-  def plantTypeMenu(): Unit = {
+  private def plantTypeMenu(): Unit = {
     println(
       """1. Solar Panels
         |2. Wind Turbines
@@ -43,9 +43,10 @@ object menu {
   }
 
 
-  def checkCameras(): Unit = {
+  private def checkCameras(): Unit = {
     println("Checking cameras...")
     Thread.sleep(3000)
+    mainMenu()
   }
 
 
