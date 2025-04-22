@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 
 
 trait GeneralSensor() {
+  val plantId: Int
   val datasetId: Int      // 245: wind, 247: solar
   val currentTime: LocalDateTime = LocalDateTime.now()
   val LastMonthTime: LocalDateTime = currentTime.minusMonths(1)

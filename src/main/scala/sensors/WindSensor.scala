@@ -1,9 +1,10 @@
 package sensors
 
-class WindSensor extends GeneralSensor {
+class WindSensor(plantInstanceId: Int) extends GeneralSensor {
 
   override val datasetId: Int = 245
-
+  override val plantId: Int = plantInstanceId
+  
   requestData(datasetId, LastMonthTime.toString, currentTime.toString)
 
   //todo implement these
