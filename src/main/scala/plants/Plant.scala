@@ -10,6 +10,8 @@ case object Plant {
   private val solar1 = new SolarPanel(IdProvider.setNextId())
   private val solar1Sensor = new SolarSensor(getPlantId(solar1))
 
+  //wait needed due to API request limit
+  Thread.sleep(2000)
   private val solar2 = new SolarPanel(IdProvider.setNextId())
   private val solar2Sensor = new SolarSensor(getPlantId(solar2))
 
