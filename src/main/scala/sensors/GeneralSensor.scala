@@ -24,6 +24,8 @@ trait GeneralSensor() {
   }
 
   def requestData(datasetId: Int, startTime: String, endTime: String): Either[String, List[(String, Double)]] = {
+    //wait needed due to API request limit
+    Thread.sleep(2000)
     val response: Response[Either[String, String]] = basicRequest
       .get(uri"https://data.fingrid.fi/api/datasets/${datasetId}/data?startTime=${startTime}&endTime=${endTime}&format=json&pageSize=20000")
       .header("x-api-key", apiKey)
