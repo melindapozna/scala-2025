@@ -5,12 +5,12 @@ import sttp.client4.quick.*
 import io.circe.*
 import io.circe.parser.*
 import java.io.*
+import plants.SolarPanel
 
-
-class SolarSensor(plantInstanceId: Int) extends GeneralSensor {
+class SolarSensor(plant: SolarPanel) extends GeneralSensor {
   // Constructor
   override val datasetId = 247
-  override val plantId: Int = plantInstanceId
+  override val plantId: Int = plant.id
   var currentReading: (String, Double) = ("", 0.0)
 
   writeToFile(requestData(datasetId, LastMonthTime.toString, currentTime.toString))
