@@ -8,7 +8,7 @@ class WindTurbine(instanceId: Int) extends GeneralPlant {
   override val storageCapacity: Double = ???
   var occupiedStorage: Double = ???
 
-  override def changeAngle(angle: Double): Option[String] = ???
+  override def changeAngle(angle: Double): Either[String, Double] = ???
 
   override def damage(): Unit = ???
 }

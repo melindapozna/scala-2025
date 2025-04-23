@@ -19,7 +19,8 @@ trait GeneralPlant {
     occupiedStorage = 0.0
   }
 
-  def changeAngle(angle: Double): Option[String] //returns error msg if angle is out of bounds, returns None if angle OK
+  //returns error msg if angle is out of bounds, returns new angle OK
+  def changeAngle(angle: Double): Either[String, Double]
 
   def damage(): Unit //reduces health
 }
