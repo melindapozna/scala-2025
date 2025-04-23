@@ -31,5 +31,10 @@ case object Plant {
     timer.schedule(getNewSensorData, 1000, 900000)
   }
 
+  def shutdown(): Unit = {
+    timer.cancel()
+    timer.purge()
+  }
+
 
 }

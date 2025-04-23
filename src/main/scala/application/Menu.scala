@@ -2,7 +2,11 @@ package application
 
 import scala.io.StdIn.readLine
 
-object Menu {
+case object Menu {
+  def start(): Unit = {
+    mainMenu()
+  }
+  
   private def mainMenu(): Unit = {
     println("\n-------------- REPS Power Plant --------------\n")
     println(
