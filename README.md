@@ -1,1 +1,2 @@
-To access the Fingrid API: create an apikey.txt file in the root folder with only the api key in it.
+## 1. Accessing Fingrid API
+Create an *apikey.txt* file in the root folder with **_only_** the API key in it
