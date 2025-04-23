@@ -1,8 +1,16 @@
-package menus
+package application
 
+import plants.Plant
 import scala.io.StdIn.readLine
 
-object Menu {
+//currently everything is run from here, IDK whether this is a good implementation
+case object Menu {
+  def start(): Unit = {
+    Plant.start()
+    println("Power plant started successfully.")
+    mainMenu()
+  }
+
   private def mainMenu(): Unit = {
     println("\n-------------- REPS Power Plant --------------\n")
     println(
@@ -15,7 +23,7 @@ object Menu {
     val choice = readLine()
 
     choice match
-      case "0" => System.exit(0)
+      case "0" => Plant.shutdown()
       case "1" => checkCameras()
       case "2" => println("IMPLEMENT")        //todo implement
       case "3" => println("IMPLEMENT")        //todo implement
@@ -48,6 +56,4 @@ object Menu {
     Thread.sleep(3000)
     mainMenu()
   }
-
-
 }

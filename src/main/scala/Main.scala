@@ -1,4 +1,7 @@
+import application.Menu
+
 @main
-def main(): Unit =
-  println("Hello world!")
+def main(): Unit = {
+  Menu.start()
+}
 
