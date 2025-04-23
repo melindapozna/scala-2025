@@ -14,7 +14,7 @@ class WindSensor(plantInstanceId: Int) extends GeneralSensor {
 
   //todo implement these
 
-  override def getLatest: Either[String, List[Double]] = {
+  override def getLatest: Either[String, Map[String, Double]] = {
     val response: Response[Either[String, String]] = basicRequest
       .get(uri"https://data.fingrid.fi/api/datasets/${datasetId}/data/latest")
       .header("x-api-key", apiKey)
@@ -23,8 +23,9 @@ class WindSensor(plantInstanceId: Int) extends GeneralSensor {
     response.body match {
       case Right(response) =>
         val parsedJson = parse(response).getOrElse(Json.Null)
-        val values = parsedJson.findAllByKey("value")
-        Right(values.map(item => item.toString.toDouble))
+        val timestamps = parsedJson.findAllByKey("endTime").map(_.toString)
+        val values = parsedJson.findAllByKey("value").map(_.toString.toDouble)
+        Right(timestamps.zip(values).toMap)
       case Left(err) =>
         val parsedJson = parse(err).getOrElse(Json.Null)
         val errorMessage = parsedJson.findAllByKey("message")
@@ -32,7 +33,7 @@ class WindSensor(plantInstanceId: Int) extends GeneralSensor {
     }
   }
   
-  override def writeToFile(): Unit = ???
+  override def writeToFile(dataRequesterFunction: Either[String, Map[String, Double]]): Either[String, String] = ???
 
   override def readFromFile: Either[String, List[Double]] = ???
 

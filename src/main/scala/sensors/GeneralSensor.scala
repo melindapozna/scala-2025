@@ -20,7 +20,7 @@ trait GeneralSensor() {
     apiKey
   }
 
-  def requestData(datasetId: Int, startTime: String, endTime: String): Either[String, List[Double]] = {
+  def requestData(datasetId: Int, startTime: String, endTime: String): Either[String, Map[String, Double]] = {
     val response: Response[Either[String, String]] = basicRequest
       .get(uri"https://data.fingrid.fi/api/datasets/${datasetId}/data?startTime=${startTime}&endTime=${endTime}&format=json&pageSize=20000")
       .header("x-api-key", apiKey)
@@ -29,8 +29,9 @@ trait GeneralSensor() {
     response.body match {
       case Right(response) =>
         val parsedJson = parse(response).getOrElse(Json.Null)
-        val values = parsedJson.findAllByKey("value")
-        Right(values.map(item => item.toString.toDouble))
+        val timestamps = parsedJson.findAllByKey("endTime").map(_.toString)
+        val values = parsedJson.findAllByKey("value").map(_.toString.toDouble)
+        Right(timestamps.zip(values).toMap)
       case Left(err) =>
         val parsedJson = parse(err).getOrElse(Json.Null)
         val errorMessage = parsedJson.findAllByKey("message")
@@ -38,8 +39,8 @@ trait GeneralSensor() {
     }
   }
   
-  def getLatest: Either[String, List[Double]]
-  def writeToFile(): Unit
+  def getLatest: Either[String, Map[String, Double]]
+  def writeToFile(dataRequesterFunction: Either[String, Map[String, Double]]): Either[String, String]
   def readFromFile: Either[String, List[Double]]
   def getCurrentEnergy: Double
   def getStorageOccupancy: Double

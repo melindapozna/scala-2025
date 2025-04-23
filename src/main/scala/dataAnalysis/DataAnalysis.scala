@@ -3,6 +3,7 @@ package dataAnalysis
 object DataAnalysis {
   //calculate mean, median, range, midrange
   //todo refactor this whole thing
+  //actually this could be moved inside sensors
 
   def mean(data: List[Double]): Double = {
     val sum = data.foldLeft(0.0)(_ + _)
