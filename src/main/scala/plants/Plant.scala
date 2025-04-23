@@ -22,7 +22,7 @@ case object Plant {
     plant.id
   }
 
-  def run(): Unit = {
+  def start(): Unit = {
     val getNewSensorData = new TimerTask {
       def run(): Unit = {
         solarSensors.foreach(_.getLatest)
