@@ -47,3 +47,6 @@ build/
 .bsp/
 
 apikey.txt
+
+.idea/
+/.idea/
