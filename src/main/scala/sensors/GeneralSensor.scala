@@ -4,10 +4,7 @@ import sttp.client4.Response
 import sttp.client4.quick.*
 import io.circe.*
 import io.circe.parser.*
-
-import java.sql.Timestamp
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 
 trait GeneralSensor() {
@@ -22,6 +19,7 @@ trait GeneralSensor() {
     bufferedSource.close()
     apiKey
   }
+  var currentReading: (String, Double)
 
   def requestData(datasetId: Int, startTime: String, endTime: String): Either[String, List[(String, Double)]] = {
     //wait needed due to API request limit
@@ -30,15 +28,15 @@ trait GeneralSensor() {
       .get(uri"https://data.fingrid.fi/api/datasets/${datasetId}/data?startTime=${startTime}&endTime=${endTime}&format=json&pageSize=20000")
       .header("x-api-key", apiKey)
       .send()
-    //println(response)
 
     response.body match {
       case Right(response) =>
         val parsedJson = parse(response).getOrElse(Json.Null)
         val timestamps = parsedJson.findAllByKey("endTime").flatMap(_.asString)
         val values = parsedJson.findAllByKey("value").map(_.toString.toDouble)
-        //println(timestamps.zip(values).toMap)
-        Right(timestamps.zip(values))
+        val readings = timestamps.zip(values).reverse
+        currentReading = readings.last
+        Right(readings)
       case Left(err) =>
         val parsedJson = parse(err).getOrElse(Json.Null)
         val errorMessage = parsedJson.findAllByKey("message")

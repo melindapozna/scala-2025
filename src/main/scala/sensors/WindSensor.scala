@@ -9,6 +9,7 @@ class WindSensor(plantInstanceId: Int) extends GeneralSensor {
 
   override val datasetId: Int = 245
   override val plantId: Int = plantInstanceId
+  var currentReading: (String, Double) = ("", 0.0)
   
   requestData(datasetId, LastMonthTime.toString, currentTime.toString)
 
