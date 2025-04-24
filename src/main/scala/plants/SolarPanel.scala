@@ -7,8 +7,9 @@ class SolarPanel(instanceId: Int) extends GeneralPlant {
   override val maxHealth: Int = 100
   var health: Int = Random.between(50, 101) //initializes the instance with random health
   override val storageCapacity: Double = 99_999_999.0
-  var occupiedStorage: Double = 10.0
+  var occupiedStorage: Double = 0.0
   private var panelAngle: Double = 90.0
+  var currentEnergy: Double = 0.0
 
   override def changeAngle(angle: Double): Either[String, Double] = {
     0 to 181 contains angle match
@@ -20,5 +21,9 @@ class SolarPanel(instanceId: Int) extends GeneralPlant {
 
   override def damage(): Unit = {
     health -= Random.nextInt(10)
+  }
+
+  override def generateEnergy(reading: Double): Unit = {
+    currentEnergy = reading * panelAngle * Random.nextDouble() * 0.1
   }
 }

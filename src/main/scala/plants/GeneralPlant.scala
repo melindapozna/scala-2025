@@ -8,6 +8,7 @@ trait GeneralPlant {
   var health: Int
   val storageCapacity: Double
   var occupiedStorage: Double
+  var currentEnergy: Double
 
   //sets health to the max health of the plant type
   def repair(): Unit = {
@@ -23,4 +24,6 @@ trait GeneralPlant {
   def changeAngle(angle: Double): Either[String, Double]
 
   def damage(): Unit //reduces health
+  
+  def generateEnergy(reading: Double): Unit 
 }

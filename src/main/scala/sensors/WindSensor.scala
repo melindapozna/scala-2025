@@ -4,11 +4,13 @@ import sttp.client4.Response
 import sttp.client4.quick.*
 import io.circe.*
 import io.circe.parser.*
+import plants.{GeneralPlant, WindTurbine}
 
-class WindSensor(plantInstanceId: Int) extends GeneralSensor {
-
+class WindSensor(plantInstance: WindTurbine) extends GeneralSensor {
   override val datasetId: Int = 245
-  override val plantId: Int = plantInstanceId
+  override val plant: GeneralPlant = plantInstance
+  override val plantId: Int = plant.id
+  var currentReading: (String, Double) = ("", 0.0)
   
   requestData(datasetId, LastMonthTime.toString, currentTime.toString)
 
