@@ -28,4 +28,5 @@ trait GeneralPlant {
   def generateEnergy(reading: Double): Unit
 
   def calculateTakenStorage(readings: List[Double]): Unit
+  def updateStorage(reading: Double): Unit
 }
