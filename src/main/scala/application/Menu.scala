@@ -1,6 +1,8 @@
 package application
 
 import plants.Plant
+
+import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 
 //currently everything is run from here, IDK whether this is a good implementation
@@ -25,7 +27,7 @@ case object Menu {
     choice match
       case "0" => Plant.shutdown()
       case "1" => checkCameras()
-      case "2" => println("IMPLEMENT")        //todo implement
+      case "2" => checkStorage()
       case "3" => println("IMPLEMENT")        //todo implement
       case "4" => println("IMPLEMENT")        //todo implement
       case "5" => plantTypeMenu()
@@ -49,11 +51,22 @@ case object Menu {
       case _ => println("Error: invalid input")
 
   }
-
-
+  
   private def checkCameras(): Unit = {
-    println("Checking cameras...")
-    Thread.sleep(3000)
+    Plant.checkCameras()
     mainMenu()
   }
+  
+  @tailrec
+  private def checkStorage(): Unit = {
+    Plant.checkStorage()
+    println("0. Back")
+    val choice = readLine()
+    choice match
+      case "0" => mainMenu()
+      case _ => 
+        println("Invalid input")
+        checkStorage()
+  }
+  
 }
