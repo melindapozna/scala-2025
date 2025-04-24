@@ -18,4 +18,6 @@ class HydroPlant(instanceId: Int) extends GeneralPlant {
   override def generateEnergy(reading: Double): Unit = ???
 
   override def calculateTakenStorage(readings: List[Double]): Unit = ???
+
+  override def updateStorage(reading: Double): Unit = ???
 }

@@ -30,4 +30,8 @@ class SolarPanel(instanceId: Int) extends GeneralPlant {
   override def calculateTakenStorage(readings: List[Double]): Unit = {
     occupiedStorage = readings.foldLeft(0.0)((x, y) => x + y)
   }
+  
+  override def updateStorage(reading: Double): Unit = {
+    occupiedStorage += reading
+  }
 }

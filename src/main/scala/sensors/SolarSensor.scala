@@ -35,6 +35,7 @@ class SolarSensor(plantInstance: SolarPanel) extends GeneralSensor {
           fileWriter.append(s"${currentReading._1};${currentReading._2}\n")
           fileWriter.close()
           plant.generateEnergy(currentReading._2)
+          plant.updateStorage(currentReading._2)
         }
         Right(readings)
       case Left(err) =>
