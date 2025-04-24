@@ -22,6 +22,17 @@ case object Plant {
     plant.id
   }
 
+  def checkStorage(): Unit = {
+    val solarStorages = solarSensors.foldLeft("")((currStr, sensor) =>
+      currStr.concat(s"Solar panel #${sensor.plantId}: ${sensor.getStorageOccupancy}%\n"))
+    println(solarStorages)
+  }
+
+  def checkCameras(): Unit = {
+    println("Checking cameras...")
+    Thread.sleep(3000)
+  }
+
   def start(): Unit = {
     val getNewSensorData = new TimerTask {
       def run(): Unit = {
