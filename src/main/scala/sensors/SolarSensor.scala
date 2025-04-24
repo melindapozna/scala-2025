@@ -7,13 +7,15 @@ import io.circe.parser.*
 import java.io.*
 import plants.SolarPanel
 
-class SolarSensor(plant: SolarPanel) extends GeneralSensor {
+class SolarSensor(plantInstance: SolarPanel) extends GeneralSensor {
   // Constructor
   override val datasetId = 247
+  override val plant: SolarPanel = plantInstance
   override val plantId: Int = plant.id
   var currentReading: (String, Double) = ("", 0.0)
 
   writeToFile(requestData(datasetId, LastMonthTime.toString, currentTime.toString))
+  plant.generateEnergy(currentReading._2)
 
   override def getLatest: Either[String, List[(String, Double)]] = {
     val response: Response[Either[String, String]] = basicRequest
@@ -32,6 +34,7 @@ class SolarSensor(plant: SolarPanel) extends GeneralSensor {
           val fileWriter = new FileWriter(new File(s"data/solar/solar-$plantId.csv"), true)
           fileWriter.append(s"${currentReading._1};${currentReading._2}\n")
           fileWriter.close()
+          plant.generateEnergy(currentReading._2)
         }
         Right(readings)
       case Left(err) =>

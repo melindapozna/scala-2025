@@ -4,10 +4,13 @@ import sttp.client4.Response
 import sttp.client4.quick.*
 import io.circe.*
 import io.circe.parser.*
+import plants.GeneralPlant
+
 import java.time.LocalDateTime
 
 
 trait GeneralSensor() {
+  val plant: GeneralPlant
   val plantId: Int
   val datasetId: Int      // 245: wind, 247: solar
   val currentTime: LocalDateTime = LocalDateTime.now()
