@@ -14,4 +14,6 @@ class WindTurbine(instanceId: Int) extends GeneralPlant {
   override def damage(): Unit = ???
   
   override def generateEnergy(reading: Double): Unit = ???
+
+  override def calculateTakenStorage(readings: List[Double]): Unit = ???
 }

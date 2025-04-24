@@ -25,5 +25,7 @@ trait GeneralPlant {
 
   def damage(): Unit //reduces health
   
-  def generateEnergy(reading: Double): Unit 
+  def generateEnergy(reading: Double): Unit
+
+  def calculateTakenStorage(readings: List[Double]): Unit
 }

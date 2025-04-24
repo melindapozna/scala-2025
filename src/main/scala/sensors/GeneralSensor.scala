@@ -39,6 +39,8 @@ trait GeneralSensor() {
         val values = parsedJson.findAllByKey("value").map(_.toString.toDouble)
         val readings = timestamps.zip(values).reverse
         currentReading = readings.last
+        plant.generateEnergy(currentReading._2)
+        plant.calculateTakenStorage(values)
         Right(readings)
       case Left(err) =>
         val parsedJson = parse(err).getOrElse(Json.Null)

@@ -24,7 +24,7 @@ case object Plant {
 
   def checkStorage(): Unit = {
     val solarStorages = solarSensors.foldLeft("")((currStr, sensor) =>
-      currStr.concat(s"Solar panel #${sensor.plantId}: ${sensor.getStorageOccupancy}%\n"))
+      currStr.concat(f"Solar panel #${sensor.plantId}: ${sensor.getStorageOccupancy}%.2f%%\n"))
     println(solarStorages)
   }
 
