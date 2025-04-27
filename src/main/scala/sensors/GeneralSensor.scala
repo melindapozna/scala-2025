@@ -8,7 +8,7 @@ import plants.GeneralPlant
 
 import java.time.LocalDateTime
 
-
+// all sensors inherit this trait
 trait GeneralSensor() {
   val plant: GeneralPlant
   val plantId: Int
@@ -23,7 +23,10 @@ trait GeneralSensor() {
     apiKey
   }
   var currentReading: (String, Double)
-
+  
+  // requests data from a time period from Fingrid API
+  // also calls generateEnergy and calculateTakenStorage for its plant instance
+  // returns the readings as a list of tuples (timestamp, value)
   def requestData(datasetId: Int, startTime: String, endTime: String): Either[String, List[(String, Double)]] = {
     //wait needed due to API request limit
     Thread.sleep(2000)
@@ -49,10 +52,23 @@ trait GeneralSensor() {
     }
   }
   
+  // gets the latest reading from Fingrid (after every 15 minutes)
+  // appends the latest reading to the corresponding file
   def getLatest: Either[String, List[(String, Double)]]
+  
+  // writes the initially received readings to a file
   def writeToFile(dataRequesterFunction: Either[String, List[(String, Double)]]): Either[String, String]
+  
+  // not implemented yet,
+  // should read a specific time period from the file e.g. 20-27th April
   def readFromFile: Either[String, List[Double]]
+  
+  // returns the current energy that the plant instance is generating (user + plant communicating through sensors)
   def getCurrentEnergy: Double
+  
+  // returns a % of taken storage
   def getStorageOccupancy: Double
+  
+  // returns the current health of the plant
   def getHealth: Int
 }
