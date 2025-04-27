@@ -1,9 +1,11 @@
 package dataAnalysis
 
 object DataAnalysis {
-  //calculate mean, median, range, midrange
-  //todo refactor this whole thing
-  //actually this could be moved inside sensors
+  // calculate mean, median, range, midrange
+  // error handling needs to be implemented
+  // this whole file is not yet used, but
+  // the user will be able to select a range, then this range is read from the corresponding file, and the data analysis 
+  // is calculated on that
 
   def mean(data: List[Double]): Double = {
     val sum = data.foldLeft(0.0)(_ + _)

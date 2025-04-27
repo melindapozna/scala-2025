@@ -5,14 +5,14 @@ import plants.Plant
 import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 
-//currently everything is run from here, IDK whether this is a good implementation
+// user interface for the entire plant
 case object Menu {
   def start(): Unit = {
     Plant.start()
     println("Power plant started successfully.")
     mainMenu()
   }
-
+  
   private def mainMenu(): Unit = {
     println("\n-------------- REPS Power Plant --------------\n")
     println(
@@ -34,7 +34,8 @@ case object Menu {
       case _ => println("Error: invalid input")
 
   }
-
+  
+  // this will be refactored, so don't worry about it for now
   private def plantTypeMenu(): Unit = {
     println(
       """1. Solar Panels
