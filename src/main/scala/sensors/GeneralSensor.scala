@@ -6,7 +6,9 @@ import io.circe.*
 import io.circe.parser.*
 import plants.GeneralPlant
 
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.Date
 
 // all sensors inherit this trait
 trait GeneralSensor() {
@@ -52,11 +54,21 @@ trait GeneralSensor() {
     }
   }
   
-  def parseLine(line: String): Option[(String, Double)] = {
+  def parseLine(line: String): Option[(Date, Double)] = {
     val splitLine = line.split(";")
     splitLine match
-      case Array(time, num) => Some((time, num.toDouble))
+      case Array(time, num) =>
+        val dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+        Some((dFormat.parse(time), num.toDouble))
       case _ => None
+  }
+
+  def userInputToDateTime(userInput: String): Option[Date] = {
+    val dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+    try
+      Some(dFormat.parse(userInput))
+    catch
+      case e: Exception => None
   }
   
   // gets the latest reading from Fingrid (after every 15 minutes)
@@ -68,7 +80,7 @@ trait GeneralSensor() {
   
   // not implemented yet,
   // should read a specific time period from the file e.g. 20-27th April
-  def readFromFile(startDate: String, endDate: String): Either[String, List[(String, Double)]]
+  def readFromFile(startDate: String, endDate: String): Either[String, List[Double]]
   
   // returns the current energy that the plant instance is generating (user + plant communicating through sensors)
   def getCurrentEnergy: Double
