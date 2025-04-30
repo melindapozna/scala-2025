@@ -11,13 +11,13 @@ class SolarPanel(instanceId: Int) extends GeneralPlant {
   var health: Int = Random.between(50, 101) //initializes the instance with random health
   override val storageCapacity: Double = Random.between(800_000.0, 1_000_000.0)
   var occupiedStorage: Double = 0.0
-  private var panelAngle: Double = 90.0
+  private var panelAngle: Int = 90
   var currentEnergy: Double = 0.0
 
   
   // the user can set a new angle that changes how much energy is produced
-  override def changeAngle(angle: Double): Either[String, Double] = {
-    0 to 181 contains angle match
+  def changeAngle(angle: Int): Either[String, Int] = {
+    0 to 180 contains angle match
       case true =>
         panelAngle = angle
         Right(panelAngle)

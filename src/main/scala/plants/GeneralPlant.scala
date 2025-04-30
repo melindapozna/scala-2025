@@ -21,9 +21,6 @@ trait GeneralPlant {
     occupiedStorage = 0.0
   }
 
-  // returns error msg if angle is out of bounds, returns new angle OK
-  def changeAngle(angle: Double): Either[String, Double]
-
   def damage(): Unit //reduces health
   
   // gets the last reading (that is stored as a variable called currentReading in the sensors)
