@@ -1,4 +1,4 @@
-package application
+package functor_implementation
 
 //FunctorAid is a helper that makes using the functor easier.
 // can call fmap(myData)(myFunction) and scala applies the right Functor (List, Either, Option, etc...)
