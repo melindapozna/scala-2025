@@ -62,7 +62,7 @@ class SolarSensor(plantInstance: SolarPanel) extends GeneralSensor {
 
   override def readFromFile: Either[String, List[Double]] = ???
 
-  override def getCurrentEnergy: Double = ???
+  override def getCurrentEnergy: Double = plant.currentEnergy
 
   override def getStorageOccupancy: Double = plant.occupiedStorage / plant.storageCapacity * 100
 

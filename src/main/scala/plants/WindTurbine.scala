@@ -9,7 +9,7 @@ class WindTurbine(instanceId: Int) extends GeneralPlant {
   var occupiedStorage: Double = ???
   var currentEnergy: Double = ???
   
-  override def changeAngle(angle: Double): Either[String, Double] = ???
+  def changeAngle(angle: Double): Either[String, Double] = ???
 
   override def damage(): Unit = ???
   
