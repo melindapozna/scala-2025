@@ -52,6 +52,13 @@ trait GeneralSensor() {
     }
   }
   
+  def parseLine(line: String): Option[(String, Double)] = {
+    val splitLine = line.split(";")
+    splitLine match
+      case Array(time, num) => Some((time, num.toDouble))
+      case _ => None
+  }
+  
   // gets the latest reading from Fingrid (after every 15 minutes)
   // appends the latest reading to the corresponding file
   def getLatest: Either[String, List[(String, Double)]]
@@ -61,7 +68,7 @@ trait GeneralSensor() {
   
   // not implemented yet,
   // should read a specific time period from the file e.g. 20-27th April
-  def readFromFile: Either[String, List[Double]]
+  def readFromFile(startDate: String, endDate: String): Either[String, List[(String, Double)]]
   
   // returns the current energy that the plant instance is generating (user + plant communicating through sensors)
   def getCurrentEnergy: Double
