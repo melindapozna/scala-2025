@@ -1,4 +1,4 @@
-package application
+package functor_implementation
 
 //functor[F[_]] so we can also use it with the functor aid
 trait Functor[F[_]] {
