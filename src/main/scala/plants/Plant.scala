@@ -1,7 +1,7 @@
 package plants
 
 import application.IdProvider
-import sensors.SolarSensor
+import sensors._
 
 import java.util.Timer
 import java.util.TimerTask
@@ -24,8 +24,14 @@ case object Plant {
   private val solarPanels = List(solar1, solar2)
   private val solarSensors = List(solar1Sensor, solar2Sensor)
 
-  private val windTurbines = List[WindTurbine]()
+  private val wind1 = new WindTurbine(IdProvider.setNextId())
+  private val wind1Sensor = new WindSensor(wind1)
+  
+  private val windTurbines = List[WindTurbine](wind1)
+  private val windSensors = List[WindSensor](wind1Sensor)
+  
   private val hydroPlants = List[HydroPlant]()
+  private val hydroSensors = List[HydroSensor]()
 
   // starting a timer
   private val timer = new Timer()
@@ -71,7 +77,7 @@ case object Plant {
 
   def checkCurrentEnergy(): Unit = {
     val solarEnergies = solarSensors.foldLeft("")((currStr, sensor) =>
-      currStr.concat(f"Solar panel #${sensor.plantId}: ${sensor.getCurrentEnergy}%.2f%%\n"))
+      currStr.concat(f"Solar panel #${sensor.plantId}: ${sensor.getCurrentEnergy}%.2f MWh/h\n"))
     println(solarEnergies)
   }
 
@@ -111,7 +117,11 @@ case object Plant {
             Left("Invalid input. Hydro plant resistances have not been set.")
       case _ => Left("Invalid plant type when trying to adjust plant parameters.")
   }
-  
+
+  def analyzeData(startDate: String, endDate: String): Unit = {
+
+  }
+
   // every 15 minutes (the API is updated that frequently), it gets the new reading
   def start(): Unit = {
     val getNewSensorData = new TimerTask {
