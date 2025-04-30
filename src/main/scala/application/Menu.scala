@@ -33,7 +33,6 @@ case object Menu {
       case _ =>
         println("Error: invalid input")
         mainMenu()
-
   }
   
   private def checkCameras(): Unit = {
@@ -97,5 +96,4 @@ case object Menu {
       case Left(funcResult) => println(s"Error: $funcResult")
       case Right(funcResult) => println(funcResult)
   }
-
 }
