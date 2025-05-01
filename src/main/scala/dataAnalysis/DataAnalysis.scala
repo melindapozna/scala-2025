@@ -44,7 +44,7 @@ object DataAnalysis {
     val sortedData = data.sortWith(_ < _)
     val last = sortedData.head
     val first = sortedData.last
-    last - first
+    first - last
   }
 
 
