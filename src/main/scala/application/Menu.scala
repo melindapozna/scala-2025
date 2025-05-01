@@ -24,7 +24,8 @@ case object Menu {
       """1. Check cameras
         |2. Check storage
         |3. Check and adjust current energy output
-        |4. Analyse data
+        |4. Check health and repair plant
+        |5. Analyse data
         |0. Exit""".stripMargin)
     val choice = readLine()
 
@@ -33,7 +34,8 @@ case object Menu {
       case "1" => checkCameras()
       case "2" => checkStorage()
       case "3" => checkCurrentEnergy()
-      case "4" => startDataAnalysis()
+      case "4" => checkHealth()
+      case "5" => startDataAnalysis()
       case _ =>
         println("Error: invalid input")
         mainMenu()
@@ -120,6 +122,32 @@ case object Menu {
     Plant.analyzeData(startDate, endDate)
     readLine("Press any key to continue:")
     mainMenu()
+  }
+  
+  private def checkHealth(): Unit = {
+    Plant.checkHealth()
+    println(
+      """1. Repair solar panels
+        |2. Repair wind turbines
+        |3. Repair hydro plants
+        |0. Back""".stripMargin)
+    val choice = readLine()
+    choice match
+      case "0" => mainMenu()
+      case "1" =>
+        printResult(Plant.repair("solar"))
+        mainMenu()
+      case "2" =>
+        printResult(Plant.repair("wind"))
+        mainMenu()
+      case "3" =>
+        printResult(Plant.repair("hydro"))
+        mainMenu()
+      case _ =>
+        println("Invalid input")
+        checkHealth()
+    
+    
   }
 
   // prints the results of plant methods in a pretty way

@@ -80,14 +80,14 @@ trait GeneralSensor() {
   
   // not implemented yet,
   // should read a specific time period from the file e.g. 20-27th April
-  def readFromFile(startDate: String, endDate: String): Either[String, List[Double]]
+  def readFromFile(startDate: String, endDate: String): Either[String, List[(String, Double)]]
   
   // returns the current energy that the plant instance is generating (user + plant communicating through sensors)
-  def getCurrentEnergy: Double
+  def getCurrentEnergy: Double = plant.currentEnergy
   
   // returns a % of taken storage
-  def getStorageOccupancy: Double
+  def getStorageOccupancy: Double = plant.occupiedStorage / plant.storageCapacity * 100
   
   // returns the current health of the plant
-  def getHealth: Int
+  def getHealth: Double = plant.health / plant.maxHealth * 100
 }

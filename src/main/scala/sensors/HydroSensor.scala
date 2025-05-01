@@ -12,11 +12,6 @@ class HydroSensor(plantInstance: HydroPlant) extends GeneralSensor {
 
   override def writeToFile(dataRequesterFunction: Either[String, List[(String, Double)]]): Either[String, String] = ???
 
-  override def readFromFile(startDate: String, endDate: String): Either[String, List[Double]] = ???
+  override def readFromFile(startDate: String, endDate: String): Either[String, List[(String, Double)]] = ???
 
-  override def getCurrentEnergy: Double = ???
-
-  override def getStorageOccupancy: Double = ???
-
-  override def getHealth: Int = ???
 }

@@ -3,8 +3,8 @@ package plants
 class WindTurbine(instanceId: Int) extends GeneralPlant {
   //todo
   override val id: Int = instanceId
-  override val maxHealth: Int = ???
-  var health: Int = ???
+  override val maxHealth: Double = ???
+  var health: Double = ???
   override val storageCapacity: Double = ???
   var occupiedStorage: Double = ???
   var currentEnergy: Double = ???

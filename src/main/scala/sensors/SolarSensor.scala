@@ -66,7 +66,7 @@ class SolarSensor(plantInstance: SolarPanel) extends GeneralSensor {
         Right(s"Data written to $filepath")
   }
 
-  override def readFromFile(startDate: String, endDate: String): Either[String, List[Double]] = {
+  override def readFromFile(startDate: String, endDate: String): Either[String, List[(String, Double)]] = {
     try
       val fileName = s"solar-$plantId.csv"
       val currentPath = Paths.get(System.getProperty("user.dir"))
@@ -79,19 +79,12 @@ class SolarSensor(plantInstance: SolarPanel) extends GeneralSensor {
       (userInputToDateTime(startDate), userInputToDateTime(endDate)) match
         case (Some(start), Some(end))  =>
           val goodPairs = pairs.filter(pair => pair._1.after(start) && pair._1.before(end))
-          val goodValues = goodPairs.map(pair => pair._2)
+          val formattedPairs = goodPairs.map(pair => (pair._1.toString, pair._2))
           //println(goodValues)
-          Right(goodValues)
+          Right(formattedPairs)
         case _ =>
           Left("Invalid user input.")
     catch
       case e: Exception => Left("Error while reading files.")
   }
-
-  override def getCurrentEnergy: Double = plant.currentEnergy
-
-  override def getStorageOccupancy: Double = plant.occupiedStorage / plant.storageCapacity * 100
-
-  override def getHealth: Int = plant.health
-
 }
