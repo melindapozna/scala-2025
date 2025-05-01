@@ -57,7 +57,7 @@ case object Plant {
     val solarStorages = solarSensors.foldLeft("")((currStr, sensor) =>
       currStr.concat(f"Solar panel #${sensor.plantId}: ${sensor.getStorageOccupancy}%.2f%%\n"))
     println(solarStorages)
-    println("\nNote: Clearing storage is advised above 85% occupancy!\n")
+    println("Note: Clearing storage is advised above 85% occupancy!\n")
   }
   
   def checkCameras(): Unit = {
@@ -121,6 +121,28 @@ case object Plant {
           case None =>
             Left("Invalid input. Hydro plant resistances have not been set.")
       case _ => Left("Invalid plant type when trying to adjust plant parameters.")
+  }
+
+  def checkHealth(): Unit = {
+    val solarHealths = solarSensors.foldLeft("")((currStr, sensor) =>
+      currStr.concat(f"Solar panel #${sensor.plantId}: ${sensor.getHealth}%.2f%%\n"))
+    println(solarHealths)
+    println("Note: Repairing is strongly advised under 10% health!\n")
+  }
+
+  def repair(plantType: String): Either[String, String] = {
+    plantType match
+      case "solar" =>
+        solarPanels.foreach(_.repair())
+        Right("Solar panels successfully repaired.")
+      case "wind" =>
+        //windTurbines.foreach(_.repair())
+        Right("Wind turbines successfully repaired.")
+      case "hydro" =>
+        //hydroPlants.foreach(_.repair())
+        Right("Hydro plants successfully repaired.")
+      case _ =>
+        Left("Error while trying to repair solar panels.")
   }
 
   def analyzeData(startDate: String, endDate: String): Unit = {

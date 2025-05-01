@@ -7,8 +7,8 @@ class SolarPanel(instanceId: Int) extends GeneralPlant {
   
   // these attributes can be any numbers basically, up to your imagination and what makes sense based on the received data
   // a bit of randomness is introduced for more realistic looking results
-  override val maxHealth: Int = 100
-  var health: Int = Random.between(50, 101) //initializes the instance with random health
+  override val maxHealth: Double = 100
+  var health: Double = Random.between(50, 101) //initializes the instance with random health
   override val storageCapacity: Double = Random.between(800_000.0, 1_000_000.0)
   var occupiedStorage: Double = 0.0
   private var panelAngle: Int = 90
@@ -26,7 +26,11 @@ class SolarPanel(instanceId: Int) extends GeneralPlant {
 
   // everytime energy is generated, some random damage is taken
   override def damage(): Unit = {
-    health -= Random.nextInt(10)
+    var newHealth = health
+    newHealth -= Random.nextInt(10)
+    if (newHealth >= 0) {
+      health = newHealth
+    }
   }
 
   override def generateEnergy(reading: Double): Unit = {

@@ -87,11 +87,4 @@ class SolarSensor(plantInstance: SolarPanel) extends GeneralSensor {
     catch
       case e: Exception => Left("Error while reading files.")
   }
-
-  override def getCurrentEnergy: Double = plant.currentEnergy
-
-  override def getStorageOccupancy: Double = plant.occupiedStorage / plant.storageCapacity * 100
-
-  override def getHealth: Int = plant.health
-
 }

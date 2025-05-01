@@ -39,9 +39,4 @@ class WindSensor(plantInstance: WindTurbine) extends GeneralSensor {
 
   override def readFromFile(startDate: String, endDate: String): Either[String, List[(String, Double)]] = ???
 
-  override def getCurrentEnergy: Double = ???
-
-  override def getStorageOccupancy: Double = ???
-
-  override def getHealth: Int = ???
 }

@@ -4,8 +4,8 @@ trait GeneralPlant {
   // defines traits that apply to all types of plants here
   // e.g. ID, "health", changeAngle
   val id: Int
-  val maxHealth: Int
-  var health: Int
+  val maxHealth: Double
+  var health: Double
   val storageCapacity: Double
   var occupiedStorage: Double
   var currentEnergy: Double
