@@ -20,7 +20,6 @@ class SolarSensor(plantInstance: SolarPanel) extends GeneralSensor {
   var currentReading: (String, Double) = ("", 0.0)
 
   writeToFile(requestData(datasetId, LastMonthTime.toString, currentTime.toString))
-  //readFromFile("2025-04-25 11:00", "2025-04-25 18:00")
   plant.generateEnergy(currentReading._2)
 
   override def getLatest: Either[String, List[(String, Double)]] = {

@@ -33,6 +33,7 @@ case object Plant {
   private val windTurbines = List[WindTurbine](wind1)
   private val windSensors = List[WindSensor](wind1Sensor)
 
+
   private val hydroPlants = List[HydroPlant]()
   private val hydroSensors = List[HydroSensor]()
   */
@@ -84,6 +85,11 @@ case object Plant {
     val solarEnergies = solarSensors.foldLeft("")((currStr, sensor) =>
       currStr.concat(f"Solar panel #${sensor.plantId}: ${sensor.getCurrentEnergy}%.2f MWh/h\n"))
     println(solarEnergies)
+    /*
+    val windEnergies = windSensors.foldLeft("")((currStr, sensor) =>
+      currStr.concat(f"Wind turbine #${sensor.plantId}: ${sensor.getCurrentEnergy}%.2f MWh/h\n"))
+    println(solarEnergies)
+    */
   }
 
   def adjustParams(plantType: String): Either[String, String] = {

@@ -6,15 +6,18 @@ import io.circe.*
 import io.circe.parser.*
 import plants.{GeneralPlant, WindTurbine}
 
+import java.io.{File, FileWriter}
+import java.nio.file.Paths
+import scala.io.Source
+
 class WindSensor(plantInstance: WindTurbine) extends GeneralSensor {
   override val datasetId: Int = 245
   override val plant: GeneralPlant = plantInstance
   override val plantId: Int = plant.id
   var currentReading: (String, Double) = ("", 0.0)
-  
-  requestData(datasetId, LastMonthTime.toString, currentTime.toString)
 
-  //todo implement these
+  writeToFile(requestData(datasetId, LastMonthTime.toString, currentTime.toString))
+  plant.generateEnergy(currentReading._2)
 
   override def getLatest: Either[String, List[(String, Double)]] = {
     val response: Response[Either[String, String]] = basicRequest
@@ -35,8 +38,38 @@ class WindSensor(plantInstance: WindTurbine) extends GeneralSensor {
     }
   }
   
-  override def writeToFile(dataRequesterFunction: Either[String, List[(String, Double)]]): Either[String, String] = ???
+  override def writeToFile(dataRequesterFunction: Either[String, List[(String, Double)]]): Either[String, String] = {
+    val data = dataRequesterFunction
+    data match
+      case Left(data) => Left("Error while receiving data")
+      case Right(data) =>
+        val filepath = s"data/wind/wind-$plantId.csv"
+        val fileWriter = new FileWriter(new File(filepath))
+        data.foreach(pair =>
+          fileWriter.append(s"${pair._1};${pair._2}\n")
+        )
+        fileWriter.close()
+        Right(s"Data written to $filepath")
+  }
 
-  override def readFromFile(startDate: String, endDate: String): Either[String, List[(String, Double)]] = ???
+  override def readFromFile(startDate: String, endDate: String): Either[String, List[(String, Double)]] = {
+    try
+      val fileName = s"wind-$plantId.csv"
+      val currentPath = Paths.get(System.getProperty("user.dir"))
+      val filePath = Paths.get(currentPath.toString, "data", "wind", fileName).toString
+      val fileSource = Source.fromFile(filePath)
+      val lines = fileSource.getLines()
+      val pairs = lines.flatMap(parseLine).toList
+      fileSource.close()
 
+      (userInputToDateTime(startDate), userInputToDateTime(endDate)) match
+        case (Some(start), Some(end)) =>
+          val goodPairs = pairs.filter(pair => pair._1.after(start) && pair._1.before(end))
+          val formattedPairs = goodPairs.map(pair => (pair._1.toString, pair._2))
+          Right(formattedPairs)
+        case _ =>
+          Left("Invalid user input.")
+    catch
+      case e: Exception => Left("Error while reading files.")
+  }
 }
