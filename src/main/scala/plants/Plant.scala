@@ -26,7 +26,8 @@ case object Plant {
   private val solarPanels = List(solar1, solar2)
   private val solarSensors = List(solar1Sensor, solar2Sensor)
 
-  /*private val wind1 = new WindTurbine(IdProvider.setNextId())
+  /*
+  private val wind1 = new WindTurbine(IdProvider.setNextId())
   private val wind1Sensor = new WindSensor(wind1)
 
   private val windTurbines = List[WindTurbine](wind1)
@@ -34,7 +35,8 @@ case object Plant {
 
   private val hydroPlants = List[HydroPlant]()
   private val hydroSensors = List[HydroSensor]()
-*/
+  */
+
   // starting a timer
   private val timer = new Timer()
 
@@ -55,6 +57,7 @@ case object Plant {
     val solarStorages = solarSensors.foldLeft("")((currStr, sensor) =>
       currStr.concat(f"Solar panel #${sensor.plantId}: ${sensor.getStorageOccupancy}%.2f%%\n"))
     println(solarStorages)
+    println("\nNote: Clearing storage is advised above 85% occupancy!\n")
   }
   
   def checkCameras(): Unit = {
@@ -121,9 +124,15 @@ case object Plant {
   }
 
   def analyzeData(startDate: String, endDate: String): Unit = {
-    val solarReadings = solarSensors.map(
-      _.readFromFile(startDate, endDate) match
-        case Right(readings) => readings
+    val solarReadings = solarSensors.map(sensor =>
+      sensor.readFromFile(startDate, endDate) match
+        case Right(readings) =>
+          val sorted = readings.sortBy(_._2)
+          println(s"Solar Panel ${sensor.plantId}. - all readings, sorted by value:")
+          sorted.foreach(pair =>
+            println(s"${pair._2} MWh/h (${pair._1})")
+          )
+          readings.map(_._2)
         case Left(error) => Nil
     )
     val resultsWithSensors = solarReadings.map(dataAnalysisHelper).zip(solarSensors)
@@ -170,6 +179,4 @@ case object Plant {
     timer.cancel()
     timer.purge()
   }
-
-
 }
