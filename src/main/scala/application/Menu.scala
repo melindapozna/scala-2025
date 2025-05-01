@@ -2,6 +2,10 @@ package application
 
 import plants.Plant
 
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 
@@ -29,7 +33,7 @@ case object Menu {
       case "1" => checkCameras()
       case "2" => checkStorage()
       case "3" => checkCurrentEnergy()
-      case "4" => println("IMPLEMENT")      // todo implement
+      case "4" => startDataAnalysis()
       case _ =>
         println("Error: invalid input")
         mainMenu()
@@ -88,6 +92,34 @@ case object Menu {
       case _ =>
         println("Invalid input")
         checkCurrentEnergy()
+  }
+
+  private def startDataAnalysis(): Unit = {
+    val format = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+    val now = LocalDateTime.now()
+    val earliestDate = now.minusMonths(1)
+    val formattedEarliestDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(earliestDate)
+    println("Enter the desired range in 'yyyy-MM-dd HH:mm' format.")
+    println(s"Start date can be at most 1 month prior to the current time ($formattedEarliestDate).")
+    val startDate = readLine("Start date:")
+    try
+      format.parse(startDate)
+    catch
+      case e: Exception =>
+        println(s"Incorrect date format. Please enter the date as 'yyyy-MM-dd HH:mm. E.g.: $formattedEarliestDate")
+        startDataAnalysis()
+
+    val endDate = readLine("End date:")
+    try
+      format.parse(endDate)
+    catch
+      case e: Exception =>
+        println(s"Incorrect date format. Please enter the date as 'yyyy-MM-dd HH:mm. E.g.: $formattedEarliestDate")
+        startDataAnalysis()
+
+    Plant.analyzeData(startDate, endDate)
+    readLine("Press any key to continue:")
+    mainMenu()
   }
 
   // prints the results of plant methods in a pretty way

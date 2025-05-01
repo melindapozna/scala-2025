@@ -1,10 +1,12 @@
 package plants
 
 import application.IdProvider
-import sensors._
+import sensors.*
+import dataAnalysis.DataAnalysis
 
 import java.util.Timer
 import java.util.TimerTask
+import scala.collection.immutable.HashMap
 import scala.io.StdIn.readLine
 
 
@@ -24,15 +26,15 @@ case object Plant {
   private val solarPanels = List(solar1, solar2)
   private val solarSensors = List(solar1Sensor, solar2Sensor)
 
-  private val wind1 = new WindTurbine(IdProvider.setNextId())
+  /*private val wind1 = new WindTurbine(IdProvider.setNextId())
   private val wind1Sensor = new WindSensor(wind1)
-  
+
   private val windTurbines = List[WindTurbine](wind1)
   private val windSensors = List[WindSensor](wind1Sensor)
-  
+
   private val hydroPlants = List[HydroPlant]()
   private val hydroSensors = List[HydroSensor]()
-
+*/
   // starting a timer
   private val timer = new Timer()
 
@@ -66,10 +68,10 @@ case object Plant {
         solarPanels.foreach(_.clearStorage())
         Right("Solar panel storages cleared successfully.")
       case "wind" =>
-        windTurbines.foreach(_.clearStorage())
+        //windTurbines.foreach(_.clearStorage())
         Right("Solar panel storages cleared successfully.")
       case "hydro" =>
-        hydroPlants.foreach(_.clearStorage())
+        //hydroPlants.foreach(_.clearStorage())
         Right("Solar panel storages cleared successfully.")
       case _ =>
         Left("Invalid plant type when trying to clear storage.")
@@ -101,7 +103,7 @@ case object Plant {
         val angle = readLine()
         toInt(angle) match
           case Some(angle) =>
-            windTurbines.foreach(_.changeAngle(angle))
+            //windTurbines.foreach(_.changeAngle(angle))
             Right("Wind turbine angles set successfully.")
           case None =>
             Left("Invalid input. Wind turbine angles have not been set.")
@@ -111,7 +113,7 @@ case object Plant {
         val angle = readLine()
         toInt(angle) match
           case Some(angle) =>
-            hydroPlants.foreach(_.changeResistance(angle))
+            //hydroPlants.foreach(_.changeResistance(angle))
             Right("Hydro plant resistances set successfully.")
           case None =>
             Left("Invalid input. Hydro plant resistances have not been set.")
@@ -119,7 +121,38 @@ case object Plant {
   }
 
   def analyzeData(startDate: String, endDate: String): Unit = {
+    val solarReadings = solarSensors.map(
+      _.readFromFile(startDate, endDate) match
+        case Right(readings) => readings
+        case Left(error) => Nil
+    )
+    val resultsWithSensors = solarReadings.map(dataAnalysisHelper).zip(solarSensors)
+    prettyPrintDataAnalysis(resultsWithSensors, "Solar Panel")
 
+  }
+
+  private def dataAnalysisHelper(readings: List[Double]): HashMap[String, Double] = {
+    val mean = DataAnalysis.mean(readings)
+    val median = DataAnalysis.median(readings)
+    val mode = DataAnalysis.mode(readings)
+    val range = DataAnalysis.range(readings)
+    val midrange = DataAnalysis.midrange(readings)
+    HashMap(
+      "Mean" -> mean,
+      "Median" -> median,
+      "Mode" -> mode,
+      "Range" -> range,
+      "Midrange" -> midrange
+    )
+  }
+
+  private def prettyPrintDataAnalysis(readingsWithSensor: List[(HashMap[String, Double], GeneralSensor)], plantType: String): Unit = {
+    readingsWithSensor.foreach(tuple =>
+      val results = tuple._1
+      println(s"\n$plantType ${tuple._2.plantId}.:")
+      results.foreach(pair =>
+      println(f"${pair._1}: ${pair._2}%.2f"))
+    )
   }
 
   // every 15 minutes (the API is updated that frequently), it gets the new reading
