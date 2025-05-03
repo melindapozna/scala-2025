@@ -38,13 +38,19 @@ class SolarPanel(instanceId: Int) extends GeneralPlant {
     damage()
   }
   
-  
-  
   override def calculateTakenStorage(readings: List[Double]): Unit = {
     occupiedStorage = readings.foldLeft(0.0)((x, y) => x + y)
   }
   
   override def updateStorage(reading: Double): Unit = {
     occupiedStorage += reading
+  }
+  // Added repair and clearStorage methods to the SolarPanel class
+  def solarRepair(): Unit = {
+    health = maxHealth
+  }
+
+  override def clearStorage(): Unit = {
+    occupiedStorage = 0.0
   }
 }
