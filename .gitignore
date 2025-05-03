@@ -52,7 +52,10 @@ apikey.txt
 /.idea/
 
 .metals/
+/.metals/
+
 .bloop/
+/.bloop/
 
 data/hydro/*.csv
 data/solar/*.csv
