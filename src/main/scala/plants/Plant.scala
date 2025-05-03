@@ -136,7 +136,7 @@ case object Plant {
             Left("Invalid input. Wind turbine gear has not been set.")
 
       case "hydro" =>
-        println("New hydro plant resistance percentage (integer, 0-10): ")
+        println("New hydro plant resistance percentage (integer, 0-100): ")
         val percent = readLine()
         toInt(percent) match
           case Some(percent) =>
