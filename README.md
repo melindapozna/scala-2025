@@ -1,7 +1,7 @@
 ## Instructions
 1. Clone this repository into a project. (e.g. IntelliJ IDEA: New -> Project from Version Control)
 2. Create an ***__apikey.txt__*** file in the root folder of the project. The file should contain your own API key for https://data.fingrid.fi.
-3. Run __Main.scala___.
+3. Run __Main.scala__.
 
 ## About
 This software was made as part of the final project for the course "Functional Programming".
