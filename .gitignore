@@ -50,3 +50,10 @@ apikey.txt
 
 .idea/
 /.idea/
+
+.metals/
+.bloop/
+
+data/hydro/*.csv
+data/solar/*.csv
+data/wind/*.csv

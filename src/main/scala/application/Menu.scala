@@ -76,7 +76,7 @@ case object Menu {
     Plant.checkCurrentEnergy()
     println(
       """1. Adjust solar panel angles
-        |2. Adjust wind turbine angles
+        |2. Adjust wind turbine gear
         |3. Adjust hydro turbine resistance
         |0. Back""".stripMargin)
     val choice = readLine()
