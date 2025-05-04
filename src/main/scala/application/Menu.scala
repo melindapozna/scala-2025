@@ -5,7 +5,6 @@ import plants.Plant
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Calendar
 import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 
@@ -124,6 +123,7 @@ case object Menu {
     mainMenu()
   }
   
+  @tailrec
   private def checkHealth(): Unit = {
     Plant.checkHealth()
     println(

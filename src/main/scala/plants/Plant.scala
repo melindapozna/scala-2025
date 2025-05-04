@@ -179,26 +179,19 @@ case object Plant {
   }
 
   def analyzeData(startDate: String, endDate: String): Unit = {
-    
-    // Analysis of the solar panels
+    // Analysis of solar panels
     val solarReadings = solarSensors.map(sensor =>
       sensor.readFromFile(startDate, endDate) match
         case Right(readings) =>
           val sorted = readings.sortBy(_._2)
-
-          //this prints all the readings sorted by value, taking too much space
-
-          /*println(s"Solar Panel ${sensor.plantId}. - all readings, sorted by value:")
-          sorted.foreach(pair =>
-            println(s"${pair._2} MWh/h (${pair._1})")
-          )*/
+          printSortedTable(sorted, sensor.plantId, "Solar panel")
           readings.map(_._2)
         case Left(error) => Nil
     )
     val resultSolar = solarReadings.map(dataAnalysisHelper).zip(solarSensors)
     prettyPrintDataAnalysis(resultSolar, "Solar Panel")
 
-    // Analysis of the wind turbines
+    // Analysis of wind turbines
     val windReadings = windSensors.map(sensor =>
       sensor.readFromFile(startDate, endDate) match
         case Right(readings) =>
@@ -209,7 +202,7 @@ case object Plant {
     val resultWind = windReadings.map(dataAnalysisHelper).zip(windSensors)
     prettyPrintDataAnalysis(resultWind, "Wind Turbine")
 
-    // Analysis of the Hydro plants
+    // Analysis of hydro plants
     def hydroReadings = hydroSensors.map(sensor =>
       sensor.readFromFile(startDate, endDate) match
         case Right(readings) =>
@@ -246,6 +239,16 @@ case object Plant {
       println(f"${pair._1}: ${pair._2}%.2f"))
     )
   }
+
+  private def printSortedTable(sortedValues: List[(String, Double)], plantId: Int, plantType: String): Unit = {
+    println(s"$plantType #$plantId. - all readings, sorted by value:")
+    println("Value\t\t|\t\tTime")
+    println("-------------------------")
+    sortedValues.foreach(pair =>
+      println(s"${pair._2}\t\t|\t\tMWh/h (${pair._1})")
+    )
+  }
+
 
   // every 15 minutes (the API is updated that frequently), it gets the new reading
   

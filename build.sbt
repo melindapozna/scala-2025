@@ -13,5 +13,4 @@ lazy val root = (project in file("."))
       "io.circe" %% "circe-generic",
       "io.circe" %% "circe-parser"
     ).map(_ % circeVersion)
-
   )
