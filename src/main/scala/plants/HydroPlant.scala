@@ -3,7 +3,6 @@ package plants
 import scala.util.Random
 
 class HydroPlant(instanceId: Int) extends GeneralPlant {
-  //todo
   override val id: Int = instanceId
   override val maxHealth: Double = 100
   var health: Double = Random.between(50, 101) //initializes the instance with random health
@@ -22,32 +21,25 @@ class HydroPlant(instanceId: Int) extends GeneralPlant {
       case false => Left("Error: invalid resistance")
   }
 
+  // the seemingly random numbers in the following methods are to make the results more "random" / "lifelike"
   override def damage(): Unit = {
     var newHealth = health
-    newHealth -= Random.nextInt(10)
+    newHealth -= Random.nextInt(15)
     if (newHealth >= 0) {
       health = newHealth
     }
   }
 
   override def generateEnergy(reading: Double): Unit = {
-    currentEnergy = reading * resistance * Random.nextDouble() * 0.1
+    currentEnergy = reading * resistance * Random.nextDouble() * 0.2
     damage()
   }
 
   override def calculateTakenStorage(readings: List[Double]): Unit = {
-    occupiedStorage = readings.foldLeft(0.0)((x, y) => x + y)
+    occupiedStorage = readings.foldLeft(0.0)((x, y) => x + (y * 0.9))
   }
 
   override def updateStorage(reading: Double): Unit = {
-    occupiedStorage += reading
-  }
-  // Added repair and clearStorage methods to the HydroPlant class
-  def hydroRepair(): Unit = {
-    health = maxHealth
-  }
-
-  override def clearStorage(): Unit = {
-    occupiedStorage = 0.0
+    occupiedStorage += (reading * 0.9)
   }
 }

@@ -166,16 +166,16 @@ case object Plant {
   def repair(plantType: String): Either[String, String] = {
     plantType match
       case "solar" =>
-        solarPanels.foreach(_.solarRepair())
+        solarPanels.foreach(_.repair())
         Right("Solar panels successfully repaired.")
       case "wind" =>
-        windTurbines.foreach(_.windRepair())
+        windTurbines.foreach(_.repair())
         Right("Wind turbines successfully repaired.")
       case "hydro" =>
-        hydroPlants.foreach(_.hydroRepair())
+        hydroPlants.foreach(_.repair())
         Right("Hydro plants successfully repaired.")
       case _ =>
-        Left("Error while trying to repair solar panels.")
+        Left("Error while trying to repair plant.")
   }
 
   def analyzeData(startDate: String, endDate: String): Unit = {

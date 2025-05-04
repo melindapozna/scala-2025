@@ -22,6 +22,7 @@ class WindTurbine(instanceId: Int) extends GeneralPlant {
       case false => Left("Error: invalid gear")
   }
 
+  // the seemingly random numbers in the following methods are to make the results more "random" / "lifelike"
   override def damage(): Unit = {
     var newHealth = health
     newHealth -= Random.nextInt(10) * (turbineGear / 10.0) // damage is proportional to the gear
@@ -31,23 +32,15 @@ class WindTurbine(instanceId: Int) extends GeneralPlant {
   }
   
   override def generateEnergy(reading: Double): Unit = {
-    currentEnergy = reading * turbineGear * Random.nextDouble() * 0.1
+    currentEnergy = reading * turbineGear * Random.nextDouble() * 0.15
     damage()
   }
 
   override def calculateTakenStorage(readings: List[Double]): Unit = {
-    occupiedStorage = readings.foldLeft(0.0)((x, y) => x + y)
+    occupiedStorage = readings.foldLeft(0.0)((x, y) => x + (y * 0.99))
   }
 
   override def updateStorage(reading: Double): Unit = {
-    occupiedStorage += reading
-  }
-  //Added repair and clearStorage methods to the WindTurbine class
-  def windRepair(): Unit = {
-    health = maxHealth
-  }
-
-  override def clearStorage(): Unit = {
-    occupiedStorage = 0.0
+    occupiedStorage += (reading * 0.99)
   }
 }

@@ -16,7 +16,7 @@ class HydroSensor(plantInstance: HydroPlant) extends GeneralSensor {
   override val plantId: Int = plant.id
   override val datasetId: Int = 191 
   var currentReading: (String, Double) = ("", 0.0)
-
+  
   writeToFile(requestData(datasetId, LastMonthTime.toString, currentTime.toString))
   plant.generateEnergy(currentReading._2)
 
