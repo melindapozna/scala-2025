@@ -16,7 +16,7 @@ class HydroSensor(plantInstance: HydroPlant) extends GeneralSensor {
   override val plantId: Int = plant.id
   override val datasetId: Int = 191 
   var currentReading: (String, Double) = ("", 0.0)
-
+  
   writeToFile(requestData(datasetId, LastMonthTime.toString, currentTime.toString))
   plant.generateEnergy(currentReading._2)
 
@@ -54,7 +54,7 @@ class HydroSensor(plantInstance: HydroPlant) extends GeneralSensor {
       case Left(data) => Left("Error while receiving data")
       case Right(data) =>
         val filepath = s"data/hydro/hydro-$plantId.csv"
-        val fileWriter = new FileWriter(new File(filepath), true)
+        val fileWriter = new FileWriter(new File(filepath))
         data.foreach { case (timestamp, value) =>
           fileWriter.append(s"$timestamp;$value\n")
         }

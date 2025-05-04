@@ -25,6 +25,7 @@ class SolarPanel(instanceId: Int) extends GeneralPlant {
   }
 
   // everytime energy is generated, some random damage is taken
+  // the seemingly random numbers in the following methods are to make the results more "random" / "lifelike"
   override def damage(): Unit = {
     var newHealth = health
     newHealth -= Random.nextInt(10)
@@ -44,13 +45,5 @@ class SolarPanel(instanceId: Int) extends GeneralPlant {
   
   override def updateStorage(reading: Double): Unit = {
     occupiedStorage += reading
-  }
-  // Added repair and clearStorage methods to the SolarPanel class
-  def solarRepair(): Unit = {
-    health = maxHealth
-  }
-
-  override def clearStorage(): Unit = {
-    occupiedStorage = 0.0
   }
 }

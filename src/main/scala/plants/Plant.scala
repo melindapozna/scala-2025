@@ -166,54 +166,50 @@ case object Plant {
   def repair(plantType: String): Either[String, String] = {
     plantType match
       case "solar" =>
-        solarPanels.foreach(_.solarRepair())
+        solarPanels.foreach(_.repair())
         Right("Solar panels successfully repaired.")
       case "wind" =>
-        windTurbines.foreach(_.windRepair())
+        windTurbines.foreach(_.repair())
         Right("Wind turbines successfully repaired.")
       case "hydro" =>
-        hydroPlants.foreach(_.hydroRepair())
+        hydroPlants.foreach(_.repair())
         Right("Hydro plants successfully repaired.")
       case _ =>
-        Left("Error while trying to repair solar panels.")
+        Left("Error while trying to repair plant.")
   }
 
   def analyzeData(startDate: String, endDate: String): Unit = {
-    
-    // Analysis of the solar panels
+    // Analysis of solar panels
     val solarReadings = solarSensors.map(sensor =>
       sensor.readFromFile(startDate, endDate) match
         case Right(readings) =>
           val sorted = readings.sortBy(_._2)
-
-          //this prints all the readings sorted by value, taking too much space
-
-          /*println(s"Solar Panel ${sensor.plantId}. - all readings, sorted by value:")
-          sorted.foreach(pair =>
-            println(s"${pair._2} MWh/h (${pair._1})")
-          )*/
+          printSortedTable(sorted, sensor.plantId, "Solar panel")
           readings.map(_._2)
         case Left(error) => Nil
     )
     val resultSolar = solarReadings.map(dataAnalysisHelper).zip(solarSensors)
     prettyPrintDataAnalysis(resultSolar, "Solar Panel")
+    
 
-    // Analysis of the wind turbines
+    // Analysis of wind turbines
     val windReadings = windSensors.map(sensor =>
       sensor.readFromFile(startDate, endDate) match
         case Right(readings) =>
           val sorted = readings.sortBy(_._2)
+          printSortedTable(sorted, sensor.plantId, "Wind Turbine")
           readings.map(_._2)
         case Left(error) => Nil
     )
     val resultWind = windReadings.map(dataAnalysisHelper).zip(windSensors)
     prettyPrintDataAnalysis(resultWind, "Wind Turbine")
 
-    // Analysis of the Hydro plants
+    // Analysis of hydro plants
     def hydroReadings = hydroSensors.map(sensor =>
       sensor.readFromFile(startDate, endDate) match
         case Right(readings) =>
           val sorted = readings.sortBy(_._2)
+          printSortedTable(sorted, sensor.plantId, "Hydro plant")
           readings.map(_._2)
         case Left(error) => Nil
     )
@@ -246,6 +242,21 @@ case object Plant {
       println(f"${pair._1}: ${pair._2}%.2f"))
     )
   }
+
+  private def printSortedTable(sortedValues: List[(String, Double)], plantId: Int, plantType: String): Unit = {
+    println(s"Do you want to see the readings sorted by value for '$plantType $plantId'? (y/n):")
+    val choice = readLine()
+    choice.toLowerCase() match
+      case "y" =>
+        println(s"\n$plantType #$plantId. - all readings, sorted by value:")
+        println("Value\t\t\t|\t\tTime")
+        println("---------------------------------------------------")
+        sortedValues.foreach(pair =>
+          println(s"${pair._2} MWh/h\t\t|\t\t${pair._1}")
+        )
+      case _ => return
+  }
+
 
   // every 15 minutes (the API is updated that frequently), it gets the new reading
   

@@ -5,7 +5,6 @@ import plants.Plant
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Calendar
 import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 
@@ -114,6 +113,9 @@ case object Menu {
     val endDate = readLine("End date:")
     try
       format.parse(endDate)
+      if (startDate >= endDate)
+        println("End date needs to be after start date!")
+        startDataAnalysis()
     catch
       case e: Exception =>
         println(s"Incorrect date format. Please enter the date as 'yyyy-MM-dd HH:mm. E.g.: $formattedEarliestDate")
@@ -124,6 +126,7 @@ case object Menu {
     mainMenu()
   }
   
+  @tailrec
   private def checkHealth(): Unit = {
     Plant.checkHealth()
     println(
