@@ -190,12 +190,14 @@ case object Plant {
     )
     val resultSolar = solarReadings.map(dataAnalysisHelper).zip(solarSensors)
     prettyPrintDataAnalysis(resultSolar, "Solar Panel")
+    
 
     // Analysis of wind turbines
     val windReadings = windSensors.map(sensor =>
       sensor.readFromFile(startDate, endDate) match
         case Right(readings) =>
           val sorted = readings.sortBy(_._2)
+          printSortedTable(sorted, sensor.plantId, "Wind Turbine")
           readings.map(_._2)
         case Left(error) => Nil
     )
@@ -207,6 +209,7 @@ case object Plant {
       sensor.readFromFile(startDate, endDate) match
         case Right(readings) =>
           val sorted = readings.sortBy(_._2)
+          printSortedTable(sorted, sensor.plantId, "Hydro plant")
           readings.map(_._2)
         case Left(error) => Nil
     )
@@ -241,12 +244,17 @@ case object Plant {
   }
 
   private def printSortedTable(sortedValues: List[(String, Double)], plantId: Int, plantType: String): Unit = {
-    println(s"$plantType #$plantId. - all readings, sorted by value:")
-    println("Value\t\t|\t\tTime")
-    println("-------------------------")
-    sortedValues.foreach(pair =>
-      println(s"${pair._2}\t\t|\t\tMWh/h (${pair._1})")
-    )
+    println(s"Do you want to see the readings sorted by value for '$plantType $plantId'? (y/n):")
+    val choice = readLine()
+    choice.toLowerCase() match
+      case "y" =>
+        println(s"\n$plantType #$plantId. - all readings, sorted by value:")
+        println("Value\t\t\t|\t\tTime")
+        println("---------------------------------------------------")
+        sortedValues.foreach(pair =>
+          println(s"${pair._2} MWh/h\t\t|\t\t${pair._1}")
+        )
+      case _ => return
   }
 
 
