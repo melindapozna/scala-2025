@@ -1,3 +1,7 @@
+// Members:
+// Avaneep Kamal
+// Melinda Pózna
+// Miska Puurunen
 import application.Menu
 
 @main
